@@ -1,11 +1,17 @@
 require("dotenv").config();
 import { GraphQLServer, PubSub } from "graphql-yoga";
 import mongoose from "mongoose";
-
+import { Client } from "pg";
 import schema from "../graphql/";
 import { models } from "./db/";
 
 const { mongoURI: db } = process.env;
+
+const client = new Client({
+  password: "admin",
+  user: "admin",
+  host: "jdbc:postgresql://localhost:5432/potgres",
+});
 
 const pubsub = new PubSub();
 
@@ -20,6 +26,12 @@ const context = {
   models,
   pubsub
 };
+
+(async () => {
+  await client.connect();
+  console.log("wdwd connected")
+})();
+
 
 // Connect to MongoDB with Mongoose.
 mongoose

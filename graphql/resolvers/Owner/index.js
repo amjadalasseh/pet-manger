@@ -27,16 +27,17 @@ export default {
         phone: owner.phone,
         address: owner.address
       });
-      console.log('newOwner==>',newOwner)
       return new Promise((resolve, reject) => {
         newOwner.save((err, res) => {
           err ? reject(err) : resolve(res);
         });
       });
     },
-    updateOwner: async (parent, { _id, owner }, context, info) => {
+    updateOwner: async (parent, { _id, owner, pets}, context, info) => {
+      console.log('pets==>',pets[0])
+      console.log('owner==>',owner)
       return new Promise((resolve, reject) => {
-        Owner.findByIdAndUpdate(_id, { $set: { ...owner } }, { new: true }).exec(
+        Owner.findByIdAndUpdate(_id, { $set: { ...owner, pets:{name:"test"} } }, { new: true }).exec(
           (err, res) => {
             err ? reject(err) : resolve(res);
           }

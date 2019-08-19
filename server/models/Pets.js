@@ -7,30 +7,26 @@ ObjectID.prototype.valueOf = function() {
   return this.toString();
 };
 
-const OwnerSchema = new Schema({
+const PetSchema = new Schema({
   name: {
     type: String,
     required: true
   },
-  email: {
+  color: {
     type: String,
     unique: true,
     required: true
   },
-  phone: {
+  age: {
     type: Number,
     required: true
   },
-  address: {
+  breed: {
     type: String,
     required: true
-  },
-  pets: [
-    {
-      type: Schema.Types.Mixed,
-      
-    }
-  ]
+  }
 });
 
-export default mongoose.model("Owner", OwnerSchema);
+export default mongoose.model("Pet", PetSchema);
+
+
