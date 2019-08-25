@@ -1,34 +1,15 @@
 export default `
   type Owner {
-    _id: String!
+    id: String!
     name: String!
     email: String!
     phone: Int!
     address: String!
+    petsId:  String!
+    petDetails: [Pets]
   }
 
   type Query {
-    owner(_id: ID!): Owner!
-    owners: [Owner!]!
+    owners(id:String): [Owner!]!
   }
-
-  type Mutation {
-    createOwner(owner: CreateOwnerInput): Owner!
-    updateOwner(_id: String!, owner: UpdateOwnerInput!): Owner!
-    deleteOwner(_id: String!): Owner!
-  }
-
-  input CreateOwnerInput {
-    name: String!
-    email: String!
-    phone: Int!
-    address: String!
-  }
-  
-  input UpdateOwnerInput {
-    name: String!
-    email: String!
-    phone: Int!
-    address: String!
-  } 
 `;

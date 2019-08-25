@@ -1,54 +1,28 @@
-import Owner from "../../../server/models/Owner";
+
+import db from "../../../server/mod/";
+import isEmpty from "lodash.isempty";
 
 export default {
   Query: {
-    owner: async (parent, { _id }, context, info) => {
-      return await Owner.findOne({ _id }).exec();
-    },
-    owners: async (parent, args, context, info) => {
-      const owners = await Owner.find({})
-        .populate()
-        .exec();
-
-      return owners.map(u => ({
-        _id: u._id.toString(),
-        name: u.name,
-        email: u.email,
-        phone: u.phone,
-        address: u.address
-      }));
+    owners: async (parent, {id}, context, info) => {
+    
+      if (!isEmpty(context.data)) {
+        return context.data
+      }
+      const ownerId= (!isEmpty(id))? `WHERE owner.id="${id}" `:"";
+    
+      const [rows, fields] = await db.sequelize.query(`SELECT owner.*,
+                                                       JSON_ARRAYAGG(JSON_OBJECT('name', pets.name,'petType', pets.petType)) AS petDetails
+                                                       FROM owner 
+                                                       left JOIN ownerpets on ownerpets.ownerId = owner.id 
+                                                       left JOIN pets on ownerpets.petId = pets.id 
+                                                       ${ownerId}
+                                                       GROUP by owner.id
+                                                       ` ) 
+                                                       
+        console.log('rows==>',rows)
+      return rows;
     }
   },
-  Mutation: {
-    createOwner: async (parent, { owner }, context, info) => {
-      const newOwner = await new Owner({
-        name: owner.name,
-        email: owner.email,
-        phone: owner.phone,
-        address: owner.address
-      });
-      console.log('newOwner==>',newOwner)
-      return new Promise((resolve, reject) => {
-        newOwner.save((err, res) => {
-          err ? reject(err) : resolve(res);
-        });
-      });
-    },
-    updateOwner: async (parent, { _id, owner }, context, info) => {
-      return new Promise((resolve, reject) => {
-        Owner.findByIdAndUpdate(_id, { $set: { ...owner } }, { new: true }).exec(
-          (err, res) => {
-            err ? reject(err) : resolve(res);
-          }
-        );
-      });
-    },
-    deleteOwner: async (parent, { _id }, context, info) => {
-      return new Promise((resolve, reject) => {
-        Owner.findByIdAndDelete(_id).exec((err, res) => {
-          err ? reject(err) : resolve(res);
-        });
-      });
-    }
-  }
+
 };
