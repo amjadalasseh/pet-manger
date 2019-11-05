@@ -60,7 +60,7 @@
     "iconv-lite": "^0.5.0",
     "lodash": "^4.17.15",
     "merge-graphql-schemas": "^1.5.7",
-    "mongoose": "^5.3.13",
+    "mongoose": "^5.7.5",
     "mysql2": "^1.6.5",
     "nodemon": "^1.18.10",
     "sequelize": "^5.15.1",
