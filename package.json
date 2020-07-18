@@ -58,7 +58,7 @@
     "graphql-tools": "^4.0.3",
     "graphql-yoga": "^1.16.7",
     "iconv-lite": "^0.5.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "merge-graphql-schemas": "^1.5.7",
     "mongoose": "^5.3.13",
     "mysql2": "^1.6.5",
